@@ -1,1 +1,99 @@
+<!-- extends the file base.html, basically loads base.html in addition to home.html -->
 {% extends "base.html" %}
+
+<!-- overrides the block named 'content' in base.html.
+override works much like in Java, where a subclass's 
+method will override a parent class's method with the same name.
+so this block replaces what is contained in the block 'content' in base.html -->
+{% block content %}
+	<h2>a label</h2>
+<!-- here we add a DOM element with the id 'comparison-graph' 
+so Highcharts knows where to mount the graph -->
+	<div id="comparison-graph"></div>
+{% endblock content %}
+
+<!-- just a block to signify our javascript, needs to be different name from 
+'javascript' in base.html or else it will override -->
+{% block extra_js %}
+	{% block javascript %}
+		<!-- Highcharts libraries -->
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		
+		<!-- Our code to create the graph -->
+		<script>
+		<!-- Notice the ID 'comparison-graph', it looks for an element in the DOM --> 
+		<!-- with that id name and mounts the graph there -->
+		
+		<!-- basic customization options found at https://api.highcharts.com/highcharts/ -->
+		Highcharts.chart('comparison-graph', {
+
+			title: {
+				text: 'Absorbance Comparison'
+			},
+			
+			chart: {
+				zoomType: 'x',
+			},
+
+			xAxis: {
+				startOnTick: true,
+				tickInterval: 1,
+				min: 190,
+				title: {
+						text: "Wavelength (nm)"
+				},
+				type: 'linear'
+			},
+			
+			plotOptions: {
+				series: {
+					label: {
+						connectorAllowed: false
+					},
+					pointStart: 190
+				}
+			},
+			
+			yAxis: {
+				title: {
+					text: 'Absorbance'
+				}
+			},
+			
+			legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'middle'
+			},
+
+			tooltip: {
+				headerFormat: '<b>{series.name}</b><br />',
+				pointFormat: 'x = {point.x} nm, y = {point.y} absorbance'
+			},
+
+			series: [
+			{
+					name: "CadmiumTaq_1",
+				data: [0.800998,0.801799,0.803004,0.803935,0.804851,0.805893,0.806635,0.808743,0.810971,0.81478,0.819225,0.823866,0.828853,0.834226,0.83998,0.846298,0.853342,0.861124,0.867694,0.872614,0.879426,0.88734,0.896459,0.905996,0.914123,0.921806,0.930186,0.937262,0.944228,0.950505,0.955668,0.961132,0.965932,0.971365,0.976308,0.980553,0.984538,0.988898,0.993697,0.99932,1.00469,1.01155,1.01814,1.02549,1.0343,1.04405,1.05414,1.06618,1.07841,1.0899,1.09964,1.10562,1.10851,1.10899,1.10626,1.10137,1.09507,1.0885,1.0815,1.07399,1.07247]
+			},
+			
+			{
+			name: "CadmiumTaq_2",
+			data: [0.800117,0.800253,0.800934,0.801971,0.803341,0.804271,0.805484,0.80794,0.810282,0.813861,0.817383,0.822918,0.827785,0.83384,0.839639,0.846388,0.853136,0.860539,0.866878,0.871857,0.878432,0.886344,0.895039,0.904825,0.913452,0.921192,0.92957,0.936778,0.943798,0.94992,0.955377,0.960987,0.966272,0.971214,0.976058,0.980281,0.983826,0.988238,0.992525,0.998203,1.00412,1.01106,1.01804,1.02493,1.03396,1.04369,1.05346,1.06573,1.07783,1.08957,1.09933,1.10472,1.10679,1.10739,1.10505,1.10049,1.09364,1.08688,1.0785,1.07053,1.06663]
+			},
+			{
+				name: "CadmiumTaq_3",
+			  data: [0.80039,0.800331,0.801237,0.802625,0.804395,0.805381,0.806252,0.807744,0.81004,0.813431,0.817835,0.822964,0.828375,0.833837,0.839523,0.845906,0.853461,0.861268,0.867412,0.872131,0.878288,0.88632,0.895385,0.905213,0.91382,0.921546,0.929697,0.93657,0.943853,0.949692,0.955434,0.961107,0.966976,0.971362,0.975923,0.980055,0.983285,0.988713,0.993491,0.99959,1.0044,1.01082,1.01759,1.02486,1.03373,1.04386,1.05395,1.0667,1.07873,1.09022,1.0992,1.10447,1.1074,1.10839,1.10634,1.1013,1.09411,1.08699,1.07838,1.07049,1.06562]
+			},
+			{
+					name: "Control",
+				data: [0.791355,0.791316,0.791913,0.792767,0.793951,0.795144,0.796087,0.797957,0.800144,0.803252,0.80723,0.811984,0.81751,0.823092,0.829235,0.83562,0.842316,0.849967,0.855641,0.860688,0.866663,0.874238,0.882625,0.891732,0.900021,0.907084,0.914753,0.921637,0.928015,0.93373,0.938542,0.94379,0.948893,0.953632,0.958203,0.962451,0.966084,0.969942,0.973848,0.978793,0.983631,0.989799,0.995676,1.00188,1.00957,1.01813,1.02667,1.03705,1.0478,1.05787,1.06592,1.06983,1.07068,1.06987,1.06664,1.06125,1.05382,1.04736,1.03913,1.03145,1.02755]
+			}]
+		});
+		</script>
+	{% endblock javascript %}
+
+{% endblock extra_js %}
